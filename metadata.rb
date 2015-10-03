@@ -1,0 +1,7 @@
+name             'chef-s3ql'
+maintainer       'PE, pf.'
+maintainer_email 'peychart@mail.pf'
+license          'GNU Public License 3.0'
+description      'Installs/Configures chef-s3ql'
+long_description 'Installs/Configures chef-s3ql'
+version          '0.1.0'

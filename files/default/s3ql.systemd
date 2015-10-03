@@ -1,0 +1,14 @@
+[Unit]
+Description=S3QL Backup File System
+After=network.target
+ConditionPathExists=/etc/init.d/mount-s3ql.sh
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/init.d/mount-s3ql.sh start
+ExecStop=/etc/init.d/mount-s3ql.sh stop
+
+[Install]
+WantedBy=multi-user.target
+
