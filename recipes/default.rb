@@ -42,13 +42,13 @@ node['chef-s3ql']['sections'].each do |section|
 
  if section['device'] && section['mountPoint']
   bash 'fstab update' do
-   code "! grep -qsw \"#{section['device']}\" /etc/fstab && echo \"##{section['device']} #{section['mountPoint']} #{section['option']}\" >>/etc/fstab"
+   code "! grep -qsw \"#{section['device']}\" /etc/fstab && echo \"##{section['device']} #{section['mountPoint']} #{section['options']}\" >>/etc/fstab"
   end
  end
 end
 
 # authinfo file:
-file "/root/.s3ql/#{node['chef-s3ql']['authfilePath']}" do
+file node['chef-s3ql']['authfilePath'] do
  content content
  mode  '0600'
  owner 'root'
