@@ -72,15 +72,6 @@ cookbook_file "/etc/init.d/mount-s3ql" do
  notifies :reload, 'service[mount-s3ql]', :immediately
 end
 
-## systemd install:
-#cookbook_file '/etc/systemd/system/s3ql.service' do
-# source 's3ql.service'
-# owner 'root'
-# group 'root'
-# mode  '0644'
-# if { ::File.exists?('/etc/owncloud/system/') }
-#end
-
 # service declaration:
 service "mount-s3ql" do
  start_command "/etc/init.d/mount-s3ql start"

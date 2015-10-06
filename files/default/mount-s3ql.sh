@@ -44,7 +44,7 @@ case "$1" in
         ;;
   status)
         for i in "$(_getMountDef)"; do
-         _isMounted $i || true
+         _isMounted $i
         done
         ;;
   *)    echo "Usage: $0 {start|stop|status}" >&2; exit 1
