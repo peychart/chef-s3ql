@@ -34,7 +34,7 @@ if node['chef-s3ql']['authfilePath'] && node['chef-s3ql']['authfilePath']!=''
 
  # fstab update:
  content = ''
- Array[ node['chef-s3ql']['sections'] ].each do |section|
+ ( (node['chef-s3ql']['sections'].is_a? Array) ? node['chef-s3ql']['sections'] : Array[node['chef-s3ql']['sections']] ).each do |section|
   content += '[' + section['name'] + ']' + "\n"
   content += 'backend-login: ' + section['backend-login'] + "\n"        if section['backend-login']
   content += 'backend-password: ' + section['backend-password'] + "\n"  if section['backend-password']
