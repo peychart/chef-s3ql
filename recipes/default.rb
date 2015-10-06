@@ -19,8 +19,8 @@
 #
 
 # s3t package install:
-package s3ql do
- action: install
+package 's3ql' do
+ action :install
 end
 
 directory '/root/.s3ql' do
@@ -32,7 +32,7 @@ end
 
 # fstab update:
 content = ''
-node['chef-s3ql']['sections'].each do |section|
+Array[ node['chef-s3ql']['sections'] ].each do |section|
  content += '[' + section['name'] + ']' + "\n"
  content += 'backend-login: ' + section['backend-login'] + "\n"        if section['backend-login']
  content += 'backend-password: ' + section['backend-password'] + "\n"  if section['backend-password']
@@ -42,7 +42,14 @@ node['chef-s3ql']['sections'].each do |section|
 
  if section['device'] && section['mountPoint']
   bash 'fstab update' do
-   code "! grep -qsw \"#{section['device']}\" /etc/fstab && echo \"##{section['device']} #{section['mountPoint']} #{section['options']}\" >>/etc/fstab"
+   code "grep -qsw \"#{section['device']}\" /etc/fstab || echo \"##{section['device']} #{section['mountPoint']} #{section['options']}\" >>/etc/fstab"
+  end
+
+  directory section['mountPoint'] do
+   owner 'root'
+   group 'root'
+   mode  '0700'
+   action :create
   end
  end
 end
@@ -56,20 +63,29 @@ file node['chef-s3ql']['authfilePath'] do
 end
 
 # service install:
-cookbook_file "/etc/init.d/mount-s3ql.sh" do
+cookbook_file "/etc/init.d/mount-s3ql" do
  source 'mount-s3ql.sh'
  owner 'root'
  group 'root'
  mode '0755'
  action :create
+ notifies :reload, 'service[mount-s3ql]', :immediately
 end
 
-# systemd install:
-cookbook_file '/etc/systemd/system/s3ql.service' do
- source 's3ql.service'
- owner 'root'
- group 'root'
- mode  '0644'
- if { ::File.exists?('/etc/owncloud/system/') }
-end
+## systemd install:
+#cookbook_file '/etc/systemd/system/s3ql.service' do
+# source 's3ql.service'
+# owner 'root'
+# group 'root'
+# mode  '0644'
+# if { ::File.exists?('/etc/owncloud/system/') }
+#end
 
+# service declaration:
+service "mount-s3ql" do
+ start_command "/etc/init.d/mount-s3ql start"
+ status_command "/etc/init.d/mount-s3ql status"
+ stop_command "/etc/init.d/mount-s3ql stop"
+ supports :start => true, :stop => true, :status => true
+ action [ :start, :enable ]
+end

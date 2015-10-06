@@ -2,7 +2,7 @@
 # Cookbook Name:: chef-s3ql
 # Attributes:: chef-s3ql
 #
-default['chef-s3ql']['authfilePath'] = "/root/.sql3/authinfo2"
+default['chef-s3ql']['authfilePath'] = "/root/.s3ql/authinfo2"
 default['chef-s3ql']['sections'] = []
 #Example:
 #default['chef-s3ql']['sections'] = [
