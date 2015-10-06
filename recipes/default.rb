@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-if node['chef-s3ql']['authfilePath']
+if node['chef-s3ql']['authfilePath'] && node['chef-s3ql']['authfilePath']!=''
 
  # s3t package install:
  package 's3ql' do
