@@ -52,6 +52,7 @@ if node['chef-s3ql']['authfilePath'] && node['chef-s3ql']['authfilePath']!=''
     group 'root'
     mode  '0700'
     action :create
+    not_if { ::File.exists?( "#{section['mountPoint']}" ) }
    end
   end
  end
