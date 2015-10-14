@@ -42,6 +42,9 @@ case "$1" in
          ! _umount $i && ! _isMounted $i && exit 1
         done
         ;;
+  restart)
+        $0 stop; $0 start || exit 1
+        ;;
   status)
         for i in "$(_getMountDef)"; do
          _isMounted $i
